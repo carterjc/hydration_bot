@@ -26,8 +26,22 @@ for (const file of command_files) {
 
 // When the bot is connected and ready, log to console
 client.once('ready', () => {
-   console.log('All revved up with no place to go');
-   client.user.setActivity('Staying hydrated')
+    console.log('All revved up with no place to go');
+    client.user.setActivity('Staying hydrated')
+
+    // In Discord.js v12, things changed with repeating messages. This is the way now
+    var generalChannel = client.channels.cache.get('685307424869187615')
+
+    // Sends a message every 20 min
+    client.setInterval(() => {
+        // ID is hardcoded. TODO -> better solution?
+        client.guilds.cache.get('685307423921405982').members.fetch()
+            .then(fetchedGuild => {
+                if (fetchedGuild.filter(member => member.presence.status === 'online').size > 0) {
+                    generalChannel.send("Remember to drink water!");
+                }
+            })
+    }, 1200000);
 });
 
 // Every time a message is sent anywhere the bot is present,

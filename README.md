@@ -43,3 +43,7 @@ Example: `.h fact`
 
 Output: `Water expands by 9% when it freezes.`
 
+Water reminder
+-
+Every 20 minutes, Hydration Bot will automatically send a message to remind members to drink some water!
+
