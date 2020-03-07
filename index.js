@@ -28,7 +28,6 @@ for (const file of command_files) {
 client.once('ready', () => {
    console.log('All revved up with no place to go');
    client.user.setActivity('Staying hydrated')
-   client.user.setAvatar('https://i.imgur.com/gE7GcTi.jpg')
 });
 
 // Every time a message is sent anywhere the bot is present,
