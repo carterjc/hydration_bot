@@ -12,7 +12,7 @@ mongoose.connect(
 const PREFIX = process.env.PREFIX;
 const OWNER_ID = process.env.OWNER_ID;
 
-// Create a Client instance with our bot token
+// Create a Client instance with bot token
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
@@ -33,12 +33,23 @@ client.once('ready', () => {
     var generalChannel = client.channels.cache.get('685307424869187615')
 
     // Sends a message every 20 min
-    client.setInterval(() => {
+    client.setInterval(async () => {
+
+        const msg_content = "Remember to drink water!"
+        // Checks if the last message was a reminder, doesn't send if true
+        var last_msg_remind = false;
+        await generalChannel.messages.fetch({limit: 1})
+            .then((msg) => {
+                let last_msg = msg.first()
+                last_msg_remind = last_msg.content === msg_content
+            })
+
         // ID is hardcoded. TODO -> better solution?
+        // Checks if anyone is online before sending
         client.guilds.cache.get('685307423921405982').members.fetch()
             .then(fetchedGuild => {
-                if (fetchedGuild.filter(member => member.presence.status === 'online').size > 0) {
-                    generalChannel.send("Remember to drink water!");
+                if (fetchedGuild.filter(member => member.presence.status === 'online').size > 0 && !last_msg_remind) {
+                    generalChannel.send(msg_content);
                 }
             })
     }, 1200000);
